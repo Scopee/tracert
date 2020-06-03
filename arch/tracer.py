@@ -28,15 +28,15 @@ def format_line(ttl, address):
 
 
 class Tracer:
-    def __init__(self, ip, ttl):
+    def __init__(self, ip, max_ttl):
         self.ip = ip
-        self.ttl = ttl
+        self.max_ttl = max_ttl
         self.count = 0
         self.socket = None
         self.res = []
 
     def ping(self):
-        for ttl in range(1, self.ttl + 1):
+        for ttl in range(1, self.max_ttl + 1):
             for i in range(3):
                 self.send_packet(ttl)
                 finish = self.recv_packet(ttl)
@@ -61,8 +61,8 @@ class Tracer:
             self.count += 1
             return True
         else:
-            typee, _, _, _, _ = struct.unpack("bbHHh", pack[20:28])
-            if typee == 11 or typee == 0:
+            t = pack[20]
+            if t == 11 or t == 0:
                 if self.count == ttl - 1:
                     print(format_line(ttl, addr[0]))
                     self.count += 1

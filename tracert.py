@@ -11,16 +11,18 @@ def main():
     parser.add_argument('-m', default=20, type=int, help='Max TTL')
     args = parser.parse_args()
     ip = args.address
-    ttl = args.m
+    max_ttl = args.m
     try:
         try:
             socket.gethostbyname(ip)
         except Exception:
             print(ip + ' is invalid')
             exit(-1)
-        tracer = Tracer(ip, ttl)
+        tracer = Tracer(ip, max_ttl)
         tracer.ping()
-
+    except PermissionError:
+        print("You don't have permissions to do this.")
+        print("Please use sudo")
     except Exception as ex:
         raise ex
 
