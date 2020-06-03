@@ -7,10 +7,10 @@ from arch.tracer import Tracer
 
 def main():
     parser = argparse.ArgumentParser(description="tracert")
-    parser.add_argument('ip', type=str, help='IP address or DNS name')
+    parser.add_argument('address', type=str, help='IP address or DNS name')
     parser.add_argument('-m', default=20, type=int, help='Max TTL')
     args = parser.parse_args()
-    ip = args.ip
+    ip = args.address
     ttl = args.m
     try:
         try:
