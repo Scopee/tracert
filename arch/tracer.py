@@ -29,11 +29,13 @@ def format_line(ttl, address):
 
 class Tracer:
     def __init__(self, ip, max_ttl):
+        self.dest = ip
         self.ip = ip
         self.max_ttl = max_ttl
         self.count = 0
         self.socket = None
         self.res = []
+        self.is_finish = False
 
     def ping(self):
         for ttl in range(1, self.max_ttl + 1):
@@ -42,6 +44,8 @@ class Tracer:
                 finish = self.recv_packet(ttl)
                 if finish:
                     break
+            if self.is_finish:
+                break
 
     def send_packet(self, ttl):
         dest = socket.gethostbyname(self.ip)
@@ -56,6 +60,8 @@ class Tracer:
     def recv_packet(self, ttl):
         try:
             pack, addr = self.socket.recvfrom(1024)
+            if addr[0] == self.dest:
+                self.is_finish = True
         except socket.timeout:
             print(f"{ttl}. *\r\n")
             self.count += 1

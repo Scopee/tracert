@@ -18,7 +18,7 @@ def main():
         except Exception:
             print(ip + ' is invalid')
             exit(-1)
-        tracer = Tracer(ip, max_ttl)
+        tracer = Tracer(socket.gethostbyname(ip), max_ttl)
         tracer.ping()
     except PermissionError:
         print("You don't have permissions to do this.")
